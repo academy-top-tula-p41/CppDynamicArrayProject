@@ -1,14 +1,21 @@
 ﻿// CppDynamicArrayProject.cpp
 #include <iostream>
 
+template <typename T> 
+struct DArray
+{
+    T* items{ nullptr };
+    int size{};
+};
+
 template <typename T>
 void ArrayInit(T* array, int size);
 
 template <typename T>
-void ArrayPrint(T* array, int size, bool nl = true);
+void ArrayPrint(DArray<T>, bool nl = true);
 
 template <typename T>
-void ArrayPushBack(T*& array, int& size, T value);
+void ArrayPushBack(DArray<T>& array, T value);
 
 template <typename T>
 void ArrayInsert(T*& array, int& size, int index, T value);
@@ -28,7 +35,7 @@ T* ArrayCreate(int size)
 
 int main()
 {
-    int size{};
+    /*int size{};
     int* array = ArrayCreate<int>(10);
 
     ArrayPrint<int>(array, size);
@@ -40,8 +47,19 @@ int main()
     int fsize{};
     float* farray = nullptr;
 
-    ArrayPushBack(farray, fsize, 1.5F);
+    ArrayPushBack(farray, fsize, 1.5F);*/
     
+    DArray<int> iarray;
+    ArrayPushBack<int>(iarray, 100);
+    ArrayPushBack(iarray, 200);
+    ArrayPushBack(iarray, 300);
+
+    ArrayPrint<int>(iarray);
+
+    DArray<double> darray;
+    ArrayPushBack(darray, 100.5);
+
+    std::cout << iarray.size << " " << darray.size << "\n";
 }
 
 
@@ -57,27 +75,27 @@ void ArrayInit(T* array, int size)
 }
 
 template <typename T>
-void ArrayPrint(T* array, int size, bool nl)
+void ArrayPrint(DArray<T> array, bool nl)
 {
-    for (int i{}; i < size; i++)
-        std::cout << array[i] << " ";
+    for (int i{}; i < array.size; i++)
+        std::cout << array.items[i] << " ";
     
     if (nl) std::cout << "\n";
 }
 
 template <typename T>
-void ArrayPushBack(T*& array, int& size, T value)
+void ArrayPushBack(DArray<T>& array, T value)
 {
-    T* arrayNew = new T[size + 1];
+    T* arrayNew = new T[array.size + 1];
     
-    for (int i{}; i < size; i++)
-        arrayNew[i] = array[i];
+    for (int i{}; i < array.size; i++)
+        arrayNew[i] = array.items[i];
 
-    arrayNew[size] = value;
+    arrayNew[array.size] = value;
     
-    delete[] array;
-    array = arrayNew;
-    size++;
+    delete[] array.items;
+    array.items = arrayNew;
+    array.size++;
 }
 
 template <typename T>
