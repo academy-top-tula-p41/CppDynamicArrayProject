@@ -1,34 +1,63 @@
 ﻿// CppDynamicArrayProject.cpp
 #include <iostream>
 
-void ArrayInit(int* array, int size);
-void ArrayPrint(int* array, int size, bool nl = true);
+template <typename T>
+void ArrayInit(T* array, int size);
 
-void ArrayPushBack(int*& array, int& size, int value);
-void ArrayInsert(int*& array, int& size, int index, int value);
-int ArrayPopBack(int*& array, int& size);
-int ArrayRemove(int*& array, int& size, int index);
+template <typename T>
+void ArrayPrint(T* array, int size, bool nl = true);
+
+template <typename T>
+void ArrayPushBack(T*& array, int& size, T value);
+
+template <typename T>
+void ArrayInsert(T*& array, int& size, int index, T value);
+
+template <typename T>
+T ArrayPopBack(T*& array, int& size);
+
+template <typename T>
+T ArrayRemove(T*& array, int& size, int index);
+
+template <typename T>
+T* ArrayCreate(int size)
+{
+    return new T[size];
+}
+
 
 int main()
 {
     int size{};
-    int* array = nullptr;
+    int* array = ArrayCreate<int>(10);
 
-    ArrayPrint(array, size);
+    ArrayPrint<int>(array, size);
     
-    ArrayPushBack(array, size, 40);
+    ArrayPushBack<int>(array, size, 40);
     
-    ArrayPrint(array, size);
+    ArrayPrint<int>(array, size);
+
+    int fsize{};
+    float* farray = nullptr;
+
+    ArrayPushBack(farray, fsize, 1.5F);
+    
 }
 
-void ArrayInit(int* array, int size)
+
+
+
+
+template <typename T>
+void ArrayInit(T* array, int size)
 {
     srand(time(nullptr));
     for (int i{}; i < size; i++)
         array[i] = rand() % 100;
 }
 
-void ArrayPrint(int* array, int size, bool nl)
+template <typename T>
+void ArrayPrint(T* array, int size, bool nl)
 {
     for (int i{}; i < size; i++)
         std::cout << array[i] << " ";
@@ -36,9 +65,10 @@ void ArrayPrint(int* array, int size, bool nl)
     if (nl) std::cout << "\n";
 }
 
-void ArrayPushBack(int*& array, int& size, int value)
+template <typename T>
+void ArrayPushBack(T*& array, int& size, T value)
 {
-    int* arrayNew = new int[size + 1];
+    T* arrayNew = new T[size + 1];
     
     for (int i{}; i < size; i++)
         arrayNew[i] = array[i];
@@ -50,9 +80,10 @@ void ArrayPushBack(int*& array, int& size, int value)
     size++;
 }
 
-void ArrayInsert(int*& array, int& size, int index, int value)
+template <typename T>
+void ArrayInsert(T*& array, int& size, int index, T value)
 {
-    int* arrayNew = new int[size + 1];
+    T* arrayNew = new T[size + 1];
 
     for (int i{}; i < index; i++)
         arrayNew[i] = array[i];
@@ -67,11 +98,12 @@ void ArrayInsert(int*& array, int& size, int index, int value)
     size++;
 }
 
-int ArrayPopBack(int*& array, int& size)
+template <typename T>
+T ArrayPopBack(T*& array, int& size)
 {
-    int value{ array[size - 1] };
+    T value{ array[size - 1] };
 
-    int* arrayNew = new int[size - 1];
+    T* arrayNew = new T[size - 1];
     for (int i{}; i < size - 1; i++)
         arrayNew[i] = array[i];
 
@@ -82,11 +114,12 @@ int ArrayPopBack(int*& array, int& size)
     return value;
 }
 
-int ArrayRemove(int*& array, int& size, int index)
+template <typename T>
+T ArrayRemove(T*& array, int& size, int index)
 {
-    int value{ array[index] };
+    T value{ array[index] };
 
-    int* arrayNew = new int[size - 1];
+    T* arrayNew = new T[size - 1];
 
     for(int i{}; i < index; i++)
         arrayNew[i] = array[i];
